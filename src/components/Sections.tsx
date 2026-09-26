@@ -110,6 +110,13 @@ function ProjectTile({ p, i }: { p: Project; i: number }) {
         </div>
         <h3 className="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{p.title}</h3>
         <p className="mt-1 text-sm text-mute">{p.context}</p>
+        {p.logos && (
+          <div className="mt-4 flex items-center gap-2">
+            {p.logos.map((l) => (
+              <img key={l.src} src={asset(l.src)} alt={l.alt} className="h-9 w-auto rounded-[8px]" />
+            ))}
+          </div>
+        )}
         <p className="mt-5 leading-relaxed">{p.summary}</p>
 
         <div className="mt-7 space-y-6 text-sm leading-relaxed">
@@ -207,7 +214,20 @@ export function About() {
             </div>
             <p className="mt-3 text-sm font-medium">{education.sub}</p>
             <p className="mt-3 font-mono text-xs text-mute">{education.years}</p>
-            <p className="mt-1 text-sm text-mute">{education.clubs}</p>
+            <p className="label mt-5">Clubs</p>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {education.clubs.map((c) =>
+                c.logo ? (
+                  <span key={c.name} className="inline-flex h-8 items-center rounded-full bg-white px-3">
+                    <img src={asset(c.logo)} alt={c.name} className="h-5 w-auto" />
+                  </span>
+                ) : (
+                  <span key={c.name} className="inline-flex h-8 items-center rounded-full border border-line bg-paper px-3 text-xs">
+                    {c.name}
+                  </span>
+                ),
+              )}
+            </div>
           </R>
           <R as="a" href="#vex" className="tile tile-vex group flex-1 p-6 sm:p-8">
             <div className="flex items-start justify-between gap-4">

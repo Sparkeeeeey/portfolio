@@ -19,7 +19,7 @@ export default function Logo({ src, name, className = '', dark = false }: { src?
       {failed ? (
         <span className="font-mono text-[11px] font-medium tracking-wider text-ink">{initials}</span>
       ) : (
-        <img src={asset(src!)} alt={`${name} logo`} className="h-full w-full object-contain p-1.5" onError={() => setFailed(true)} />
+        <img src={asset(src!)} alt={`${name} logo`} className="h-full w-full object-contain" onError={() => setFailed(true)} />
       )}
     </span>
   )

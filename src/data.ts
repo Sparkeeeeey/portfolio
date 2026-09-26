@@ -33,6 +33,7 @@ export type Project = {
   skills: string[]
   cover: Media
   gallery: Media[]
+  logos?: { src: string; alt: string }[]
 }
 
 export const projects: Project[] = [
@@ -108,6 +109,10 @@ export const projects: Project[] = [
   },
   {
     id: 'vex',
+    logos: [
+      { src: '/img/logos/vex.png', alt: 'VEX Robotics' },
+      { src: '/img/logos/mount-academy.png', alt: 'The Mount Academy' },
+    ],
     title: 'VEX Robotics, Team 78792E',
     context: 'Mount Academy MARS · Captain, design lead & programmer',
     date: '',
@@ -197,7 +202,12 @@ export const extras = {
     sub: 'Grove School of Engineering',
     degree: 'B.E. Mechanical Engineering',
     years: '2024 – 2028',
-    clubs: 'Baja SAE · AIAA · Robotics · ASME',
+    clubs: [
+      { name: 'Baja SAE' },
+      { name: 'AIAA', logo: '/img/logos/aiaa.png' },
+      { name: 'Robotics' },
+      { name: 'ASME' },
+    ] as { name: string; logo?: string }[],
   },
   award: {
     logo: '/img/logos/vex.png',
