@@ -45,13 +45,37 @@ export default function Hero() {
     const start = { left: (vw - w) / 2, top: (vh - h) / 2, width: w, height: h }
     Object.assign(el.style, { left: `${start.left}px`, top: `${start.top}px`, width: `${w}px`, height: `${h}px` })
 
-    const fadeIn = el.animate(
-      [
-        { opacity: 0, transform: 'scale(0.96)' },
-        { opacity: 1, transform: 'scale(1)' },
-      ],
-      { duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' },
-    )
+    // Keep the photo hidden until it has actually loaded AND the tab is on screen; only then fade it in
+    // and start the ~1s hold. (Otherwise a slow connection or a background tab plays the whole intro
+    // before anyone sees it.)
+    el.style.opacity = '0'
+    let fadeIn: Animation | undefined
+    let t = 0
+    let cancelled = false
+    const whenVisible = () =>
+      document.visibilityState === 'visible'
+        ? Promise.resolve()
+        : new Promise<void>((res) => {
+            const on = () => {
+              if (document.visibilityState === 'visible') {
+                document.removeEventListener('visibilitychange', on)
+                res()
+              }
+            }
+            document.addEventListener('visibilitychange', on)
+          })
+    const imgReady = el.complete && el.naturalWidth ? Promise.resolve() : el.decode().catch(() => {})
+    Promise.all([imgReady, whenVisible()]).then(() => {
+      if (cancelled || started) return
+      fadeIn = el.animate(
+        [
+          { opacity: 0, transform: 'scale(0.96)' },
+          { opacity: 1, transform: 'scale(1)' },
+        ],
+        { duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' },
+      )
+      t = window.setTimeout(start2, 1300)
+    })
 
     // Hold the photo centered for ~1s, or start the move on the first scroll attempt
     let move: Animation | undefined
@@ -59,6 +83,7 @@ export default function Hero() {
     const start2 = () => {
       if (started) return
       started = true
+      el.style.opacity = '1'
       window.clearTimeout(t)
       removeListeners()
       const r = target.getBoundingClientRect()
@@ -90,12 +115,12 @@ export default function Hero() {
       window.removeEventListener('touchmove', onScrollIntent)
       window.removeEventListener('keydown', onKey)
     }
-    const t = window.setTimeout(start2, 1200)
 
     return () => {
+      cancelled = true
       window.clearTimeout(t)
       removeListeners()
-      fadeIn.cancel()
+      fadeIn?.cancel()
       move?.cancel()
       document.documentElement.style.overflow = ''
     }
