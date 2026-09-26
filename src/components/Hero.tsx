@@ -192,7 +192,7 @@ export default function Hero() {
           <p className="label">About</p>
           <p className="text-lg leading-snug tracking-tight sm:text-xl lg:text-[min(1.45vw,2.7vh)]">
             <span className="font-semibold">Yoobin is a</span> mechanical engineering junior at CCNY who takes ideas from SolidWorks to
-            working hardware — machining, wiring and testing it himself. Now looking for a{' '}
+            working hardware, and does the machining, wiring and testing himself. Now looking for a{' '}
             <span className="font-semibold">Summer 2027 internship</span>.
           </p>
         </div>

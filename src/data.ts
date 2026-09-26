@@ -108,12 +108,12 @@ export const projects: Project[] = [
   },
   {
     id: 'vex',
-    title: 'VEX Robotics — Team 78792E',
+    title: 'VEX Robotics, Team 78792E',
     context: 'Mount Academy MARS · Captain, design lead & programmer',
     date: '',
     team: 'Team captain',
     summary:
-      'Competition robots designed, built and programmed from the ground up — through the 2024 Southern New York State Championship and on to the VEX World Championship.',
+      'Competition robots our team designed, built and programmed. We won the 2024 Southern New York State Championship and competed at the VEX World Championship.',
     problem: 'Each season brings a new game: design a robot that scores reliably under match pressure and can run a fully autonomous skills routine.',
     did: [
       'Led the team as captain and design lead, taking each robot from concept and CAD through build, testing and iteration.',
@@ -201,7 +201,7 @@ export const extras = {
   },
   award: {
     logo: '/img/logos/vex.png',
-    title: 'VEX Robotics — New York State Champions',
+    title: 'VEX Robotics: New York State Champions',
     detail: 'Team captain, design lead and programmer. 2nd worldwide out of 5,000+ teams.',
     year: '2024',
   },
