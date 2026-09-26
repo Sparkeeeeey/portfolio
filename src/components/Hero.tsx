@@ -28,10 +28,9 @@ export default function Hero() {
   }, [phase])
 
   useLayoutEffect(() => {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const el = flyer.current
     const target = slot.current
-    if (reduce || !el || !target || window.scrollY > 10 || window.location.hash) {
+    if (!el || !target || window.scrollY > 10 || window.location.hash) {
       setTilesIn(true)
       setPhase('done')
       return

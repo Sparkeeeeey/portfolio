@@ -83,8 +83,8 @@ body {
 .arrow { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
 .group:hover .arrow { transform: translate(3px, -3px); }
 
+/* Windows' "Animation effects: off" setting turns on reduced motion for many people without them
+   knowing, which used to skip the intro entirely. Keep the intro and tile fades; just drop smooth scrolling. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .enter, .tiles-in .enter, .reveal { transform: none; animation: none; transition: none; }
-  .enter > *, .tiles-in .enter > * { opacity: 1; animation: none; }
 }
