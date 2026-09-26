@@ -64,7 +64,7 @@ export const projects: Project[] = [
     id: 'door-closer',
     title: 'Self-Closing Door',
     context: 'Access-control mechanism',
-    date: 'Jul – Aug 2026',
+    date: 'Jun – Aug 2026',
     team: 'Solo project',
     summary: 'A piston-actuated closer with a timing relay and limit switch that automatically closes and locks a restricted-access door.',
     problem: 'A restricted room was at risk of being left open and accessible whenever the door was not closed properly.',
@@ -106,12 +106,41 @@ export const projects: Project[] = [
       { src: '/img/motor-side.webp', alt: 'Side view of the motor', caption: 'Side view.' },
     ],
   },
+  {
+    id: 'vex',
+    title: 'VEX Robotics — Team 78792E',
+    context: 'Mount Academy MARS · Captain, design lead & programmer',
+    date: '',
+    team: 'Team captain',
+    summary:
+      'Competition robots designed, built and programmed from the ground up — through the 2024 Southern New York State Championship and on to the VEX World Championship.',
+    problem: 'Each season brings a new game: design a robot that scores reliably under match pressure and can run a fully autonomous skills routine.',
+    did: [
+      'Led the team as captain and design lead, taking each robot from concept and CAD through build, testing and iteration.',
+      'Programmed the robot in C++, including the autonomous skills routines.',
+      'Won Tournament Champion and Robot Skills Challenge Champion at the 2024 Southern New York State Championship.',
+      'Finished #7 of 6,383 teams in the 2023–24 final world skills standings and competed at the VEX World Championship.',
+    ],
+    result: '2024 Southern New York State Champions and VEX World Championship competitors.',
+    skills: ['Mechanical design', 'CAD', 'C++', 'Autonomous programming', 'Prototyping', 'Leadership'],
+    cover: { src: '/img/vex-run.mp4', alt: 'The robot running a skills routine', caption: 'Skills run on the practice field.', video: true, poster: '/img/vex-run-poster.webp' },
+    gallery: [
+      { src: '/img/vex-state.webp', alt: 'Robot with the 2024 state championship banners', caption: '2024 Southern NY State Championship: Tournament Champion + Robot Skills Champion.' },
+      { src: '/img/vex-worlds.webp', alt: 'Team at the VEX World Championship', caption: 'At the VEX World Championship.' },
+      { src: '/img/vex-robot.webp', alt: 'Side view of the competition robot', caption: 'Competition robot, side view.' },
+      { src: '/img/vex-worlds-robot.webp', alt: 'Robot at the World Championship pit', caption: 'Team 78792E at Worlds.' },
+      { src: '/img/vex-drive.webp', alt: 'Drivetrain gearing detail', caption: 'Drivetrain gearing.' },
+      { src: '/img/vex-awards.webp', alt: 'Shelf of VEX trophies', caption: 'The trophy shelf.' },
+    ],
+  },
 ]
 
+/** Logo files live in public/img/logos/. If a file is missing, a monogram shows instead. */
 export const experience = [
   {
     years: '2026',
     org: 'Rifton Equipment',
+    logo: '/img/logos/rifton.png',
     role: 'Mechanical Design Intern',
     place: 'Rifton, NY',
     points: [
@@ -121,8 +150,20 @@ export const experience = [
     ],
   },
   {
+    years: '2025 – 2026',
+    org: 'The City College of New York',
+    logo: '/img/logos/ccny.png',
+    role: 'Undergraduate Research Assistant (Prof. David Crismond)',
+    place: 'Manhattan, NY',
+    points: [
+      'Explored neural-network behavior with machine-learning tools such as Google Teachable Machine, varying training cycles and subject appearance.',
+      'Worked with a team to analyze training processes, model accuracy and learning patterns across AI systems.',
+    ],
+  },
+  {
     years: '2025',
     org: 'Community Playthings',
+    logo: '/img/logos/community-playthings.png',
     role: 'Manufacturing Intern',
     place: 'Esopus, NY',
     points: [
@@ -133,7 +174,8 @@ export const experience = [
   {
     years: '2024 – 2025',
     org: 'Play Ideas Robotics',
-    role: 'Robotics Coach',
+    logo: '/img/logos/play-ideas.png',
+    role: 'Robotics Instructor',
     place: 'Manhattan, NY',
     points: [
       'Taught mechanical design, CAD, C++ and control systems to student cohorts.',
@@ -144,12 +186,15 @@ export const experience = [
 
 export const extras = {
   education: {
-    school: 'The City College of New York, Grove School of Engineering',
+    logo: '/img/logos/ccny.png',
+    school: 'The City College of New York',
+    sub: 'Grove School of Engineering',
     degree: 'B.E. Mechanical Engineering',
     years: '2024 – 2028',
     clubs: 'Baja SAE · AIAA · Robotics · ASME',
   },
   award: {
+    logo: '/img/logos/vex.png',
     title: 'VEX Robotics — New York State Champions',
     detail: 'Team captain, design lead and programmer. 2nd worldwide out of 5,000+ teams.',
     year: '2024',

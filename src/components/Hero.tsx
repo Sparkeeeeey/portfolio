@@ -41,8 +41,14 @@ export default function Hero() {
       { duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' },
     )
 
+    // Hold the photo centered for up to 3s, or start the move on the first scroll attempt
     let move: Animation | undefined
-    const t = window.setTimeout(() => {
+    let started = false
+    const start2 = () => {
+      if (started) return
+      started = true
+      window.clearTimeout(t)
+      removeListeners()
       const r = target.getBoundingClientRect()
       setTilesIn(true)
       move = el.animate(
@@ -50,16 +56,34 @@ export default function Hero() {
           { left: `${start.left}px`, top: `${start.top}px`, width: `${start.width}px`, height: `${start.height}px` },
           { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px` },
         ],
-        { duration: 1100, easing: EASE, fill: 'forwards' },
+        { duration: 1200, easing: EASE, fill: 'forwards' },
       )
       move.onfinish = () => {
         setPhase('done')
         document.documentElement.style.overflow = ''
       }
-    }, 1300)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (['ArrowDown', 'PageDown', ' ', 'End', 'Enter'].includes(e.key)) {
+        e.preventDefault()
+        start2()
+      }
+    }
+    const onScrollIntent = () => start2()
+    const opts: AddEventListenerOptions = { passive: true }
+    window.addEventListener('wheel', onScrollIntent, opts)
+    window.addEventListener('touchmove', onScrollIntent, opts)
+    window.addEventListener('keydown', onKey)
+    const removeListeners = () => {
+      window.removeEventListener('wheel', onScrollIntent)
+      window.removeEventListener('touchmove', onScrollIntent)
+      window.removeEventListener('keydown', onKey)
+    }
+    const t = window.setTimeout(start2, 3000)
 
     return () => {
       window.clearTimeout(t)
+      removeListeners()
       fadeIn.cancel()
       move?.cancel()
       document.documentElement.style.overflow = ''
@@ -84,7 +108,7 @@ export default function Hero() {
 
       <div className="grid flex-1 grid-cols-1 gap-3 lg:min-h-0 lg:grid-cols-[1fr_1.1fr_1fr] lg:grid-rows-2">
         {/* Tagline */}
-        <div className="tile enter order-2 flex flex-col justify-between gap-8 p-6 sm:p-8 lg:order-none" style={d(120)}>
+        <div className="tile tile-hover enter order-2 flex flex-col justify-between gap-8 p-6 sm:p-8 lg:order-none" style={d(120)}>
           <p className="label">Mechanical Engineering · CCNY ’28</p>
           <div>
             <h1 className="text-[2.1rem] font-semibold leading-[1.02] tracking-[-0.03em] sm:text-5xl lg:text-[min(2.9vw,5.4vh)]">
@@ -109,7 +133,7 @@ export default function Hero() {
         {/* Featured project (spans both rows) */}
         <a
           href="#projects"
-          className="tile enter group order-3 flex flex-col p-3 lg:order-none lg:row-span-2"
+          className="tile tile-hover enter group order-3 flex flex-col p-3 lg:order-none lg:row-span-2"
           style={d(240)}
         >
           <div className="relative min-h-[260px] flex-1 overflow-hidden rounded-[12px]">
@@ -130,7 +154,7 @@ export default function Hero() {
         </a>
 
         {/* Yoobin is a… */}
-        <div className="tile enter order-4 flex flex-col justify-between gap-6 p-6 sm:p-8 lg:order-none" style={d(360)}>
+        <div className="tile tile-hover enter order-4 flex flex-col justify-between gap-6 p-6 sm:p-8 lg:order-none" style={d(360)}>
           <p className="label">About</p>
           <p className="text-lg leading-snug tracking-tight sm:text-xl lg:text-[min(1.45vw,2.7vh)]">
             <span className="font-semibold">Yoobin is a</span> mechanical engineering junior at CCNY who takes ideas from SolidWorks to
@@ -141,7 +165,7 @@ export default function Hero() {
 
         {/* Contact + links */}
         <div className="order-5 flex flex-col gap-3 lg:order-none">
-          <a href="#contact" className="tile enter group flex flex-1 flex-col justify-between gap-10 p-6 sm:p-8" style={d(480)}>
+          <a href="#contact" className="tile tile-hover enter group flex flex-1 flex-col justify-between gap-10 p-6 sm:p-8" style={d(480)}>
             <p className="label">Contact</p>
             <div>
               <p className="text-3xl font-semibold tracking-tight sm:text-4xl">Contact me</p>
@@ -159,7 +183,7 @@ export default function Hero() {
                 key={l.label}
                 href={l.href}
                 {...(l.ext ? { target: '_blank', rel: 'noreferrer' } : {})}
-                className="tile enter group flex items-center justify-between px-4 py-4 text-sm font-medium transition-colors hover:bg-ink hover:text-paper sm:px-5"
+                className="tile tile-hover enter group flex items-center justify-between px-4 py-4 text-sm font-medium sm:px-5"
                 style={d(560 + i * 70)}
               >
                 {l.label}

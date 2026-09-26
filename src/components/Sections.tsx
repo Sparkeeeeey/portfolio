@@ -3,6 +3,7 @@ import { asset } from '../asset'
 import type { Media, Project } from '../data'
 import { experience, extras, person, projects } from '../data'
 import Arrow from './Arrow'
+import Logo from './Logo'
 import { useReveal } from './useReveal'
 
 function R({ as: Tag = 'div', className = '', children, ...rest }: { as?: 'div' | 'article' | 'a'; className?: string; children: React.ReactNode } & Record<string, unknown>) {
@@ -17,7 +18,7 @@ function R({ as: Tag = 'div', className = '', children, ...rest }: { as?: 'div' 
 
 function SectionTitle({ n, title, note }: { n: string; title: string; note?: string }) {
   return (
-    <R className="tile flex items-end justify-between px-5 py-5 sm:px-7">
+    <R className="tile tile-hover flex items-end justify-between px-5 py-5 sm:px-7">
       <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
         <span className="mr-3 font-mono text-sm font-normal text-mute">{n}</span>
         {title}
@@ -48,7 +49,7 @@ function ProjectTile({ p, i }: { p: Project; i: number }) {
         <div className="relative aspect-[4/3] overflow-hidden rounded-[12px] bg-white lg:aspect-auto lg:h-[34rem]">
           <MediaView key={cur.src} m={cur} />
         </div>
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${all.length}, minmax(0, 1fr))` }}>
           {all.map((m, j) => (
             <button
               key={m.src}
@@ -68,7 +69,7 @@ function ProjectTile({ p, i }: { p: Project; i: number }) {
         {cur.caption && <p className="px-1 pb-1 text-xs text-mute">{cur.caption}</p>}
       </div>
 
-      <div className="tile flex flex-col p-6 sm:p-8">
+      <div className="tile tile-hover flex flex-col p-6 sm:p-8">
         <div className="flex items-start justify-between gap-4">
           <p className="label">
             {String(i + 1).padStart(2, '0')} · {p.team}
@@ -89,7 +90,7 @@ function ProjectTile({ p, i }: { p: Project; i: number }) {
             <ul className="space-y-2">
               {p.did.map((x) => (
                 <li key={x} className="flex gap-3">
-                  <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
+                  <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-ink dot" />
                   <span>{x}</span>
                 </li>
               ))}
@@ -105,7 +106,7 @@ function ProjectTile({ p, i }: { p: Project; i: number }) {
 
         <div className="mt-auto flex flex-wrap gap-2 pt-8">
           {p.skills.map((s) => (
-            <span key={s} className="rounded-full border border-line bg-paper px-3 py-1 text-xs">
+            <span key={s} className="chip rounded-full border border-line bg-paper px-3 py-1 text-xs">
               {s}
             </span>
           ))}
@@ -132,21 +133,26 @@ export function About() {
     <section id="about" className="mx-auto flex max-w-[1600px] scroll-mt-4 flex-col gap-3 px-3 pt-16 sm:px-4 sm:pt-24">
       <SectionTitle n="02" title="About" />
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-        <R className="tile p-6 sm:p-8 lg:col-span-2">
+        <R className="tile tile-hover p-6 sm:p-8 lg:col-span-2">
           <p className="label">Experience</p>
-          <div className="mt-4 divide-y divide-line">
+          <div className="rule mt-4 divide-y divide-line">
             {experience.map((e) => (
               <div key={e.org} className="grid gap-3 py-5 sm:grid-cols-[9rem_1fr]">
                 <p className="font-mono text-xs text-mute sm:pt-1.5">{e.years}</p>
                 <div>
-                  <h3 className="text-xl font-semibold tracking-tight">{e.org}</h3>
-                  <p className="text-sm text-mute">
-                    {e.role} · {e.place}
-                  </p>
+                  <div className="flex items-center gap-3">
+                    <Logo src={e.logo} name={e.org} className="h-10 w-10" />
+                    <div>
+                      <h3 className="text-xl font-semibold tracking-tight">{e.org}</h3>
+                      <p className="text-sm text-mute">
+                        {e.role} · {e.place}
+                      </p>
+                    </div>
+                  </div>
                   <ul className="mt-3 space-y-1.5 text-sm leading-relaxed">
                     {e.points.map((x) => (
                       <li key={x} className="flex gap-3">
-                        <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
+                        <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-ink dot" />
                         <span>{x}</span>
                       </li>
                     ))}
@@ -158,23 +164,35 @@ export function About() {
         </R>
 
         <div className="flex flex-col gap-3">
-          <R className="tile p-6 sm:p-8">
+          <R className="tile tile-hover p-6 sm:p-8">
             <p className="label">Education</p>
-            <h3 className="mt-4 text-xl font-semibold tracking-tight">{education.degree}</h3>
-            <p className="mt-1 text-sm">{education.school}</p>
+            <div className="mt-4 flex items-center gap-3">
+              <Logo src={education.logo} name={education.school} className="h-12 w-12" />
+              <div>
+                <h3 className="text-xl font-semibold tracking-tight">{education.degree}</h3>
+                <p className="text-sm">{education.school}</p>
+              </div>
+            </div>
+            <p className="mt-3 text-sm font-medium">{education.sub}</p>
             <p className="mt-3 font-mono text-xs text-mute">{education.years}</p>
             <p className="mt-1 text-sm text-mute">{education.clubs}</p>
           </R>
-          <R className="tile flex-1 bg-ink p-6 text-paper sm:p-8">
-            <p className="label !text-paper/60">Award · {award.year}</p>
-            <p className="mt-4 text-6xl font-semibold tracking-tight">2nd</p>
-            <p className="text-sm text-paper/70">worldwide of 5,000+ teams</p>
+          <R as="a" href="#vex" className="tile tile-vex group flex-1 p-6 sm:p-8">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Logo src={award.logo} name="VEX Robotics" dark className="h-10 w-10" />
+                <p className="label">Award · {award.year}</p>
+              </div>
+              <Arrow />
+            </div>
+            <p className="mt-6 text-6xl font-semibold tracking-tight">2nd</p>
+            <p className="text-sm opacity-70">worldwide of 5,000+ teams</p>
             <h3 className="mt-5 text-lg font-semibold">{award.title}</h3>
-            <p className="mt-1 text-sm text-paper/70">Team captain, design lead and programmer.</p>
+            <p className="mt-1 text-sm opacity-70">Team captain, design lead and programmer. See the robots →</p>
           </R>
         </div>
 
-        <R className="tile p-6 sm:p-8 lg:col-span-3">
+        <R className="tile tile-hover p-6 sm:p-8 lg:col-span-3">
           <p className="label">Skills</p>
           <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {skills.map((s) => (
@@ -200,7 +218,7 @@ export function Contact() {
     <section id="contact" className="mx-auto flex max-w-[1600px] scroll-mt-4 flex-col gap-3 px-3 pb-3 pt-16 sm:px-4 sm:pb-4 sm:pt-24">
       <SectionTitle n="03" title="Contact" />
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-        <R className="tile flex flex-col justify-between gap-10 p-6 sm:p-10 lg:col-span-2 lg:min-h-[22rem]">
+        <R className="tile tile-hover flex flex-col justify-between gap-10 p-6 sm:p-10 lg:col-span-2 lg:min-h-[22rem]">
           <p className="label">Open to Summer 2027 internships</p>
           <div>
             <p className="max-w-2xl text-3xl font-semibold leading-tight tracking-tight sm:text-5xl">
@@ -218,13 +236,13 @@ export function Contact() {
               key={l.label}
               href={l.href}
               {...(l.ext ? { target: '_blank', rel: 'noreferrer' } : {})}
-              className="tile group flex items-center justify-between p-6 transition-colors hover:bg-ink hover:text-paper"
+              className="tile tile-hover group flex items-center justify-between p-6"
             >
               <div>
                 <p className="text-xl font-semibold tracking-tight">{l.label}</p>
                 <p className="mt-1 break-all text-sm opacity-60">{l.sub}</p>
               </div>
-              <Arrow className="group-hover:bg-paper group-hover:text-ink" />
+              <Arrow />
             </R>
           ))}
         </div>

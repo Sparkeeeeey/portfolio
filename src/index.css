@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-html { scroll-behavior: smooth; }
+/* always reserve the scrollbar's space so the layout never jumps when it appears */
+html { scroll-behavior: smooth; scrollbar-gutter: stable; }
 body { background: #fafaf7; color: #141414; -webkit-font-smoothing: antialiased; }
 
 @layer components {
@@ -11,6 +12,25 @@ body { background: #fafaf7; color: #141414; -webkit-font-smoothing: antialiased;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(0, 0, 0, 0.04);
   }
   .label { @apply font-mono text-[11px] uppercase tracking-[0.14em] text-mute; }
+
+  /* hover: tile flips to black with white text */
+  .tile-hover { transition: background-color 0.35s ease, color 0.35s ease; }
+  .tile-hover:hover { background-color: #141414; color: #fafaf7; }
+  .tile-hover .label, .tile-hover .text-mute, .tile-hover .dot, .tile-hover .chip, .tile-hover .rule > * { transition: all 0.35s ease; }
+  .tile-hover:hover .label, .tile-hover:hover .text-mute { color: rgba(250, 250, 247, 0.6); }
+  .tile-hover:hover .dot { background-color: #fafaf7; }
+  .tile-hover:hover .chip { background-color: transparent; border-color: rgba(250, 250, 247, 0.3); }
+  .tile-hover:hover .rule > * { border-color: rgba(250, 250, 247, 0.15); }
+  .tile-hover .arrow-btn { transition: background-color 0.35s ease, color 0.35s ease; }
+  .tile-hover:hover .arrow-btn { background-color: #fafaf7; color: #141414; }
+
+  /* highlighted tile (VEX): black, flips to safety orange on hover */
+  .tile-vex { background-color: #141414; color: #fafaf7; transition: background-color 0.35s ease, color 0.35s ease; }
+  .tile-vex .label { color: rgba(250, 250, 247, 0.6); transition: color 0.35s ease; }
+  .tile-vex .arrow-btn { background-color: #fafaf7; color: #141414; }
+  .tile-vex:hover { background-color: #ff5a1f; color: #141414; }
+  .tile-vex:hover .label { color: rgba(20, 20, 20, 0.7); }
+  .tile-vex:hover .arrow-btn { background-color: #141414; color: #fafaf7; }
 }
 
 /* hero tiles enter after the intro photo lands */
