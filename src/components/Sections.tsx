@@ -247,9 +247,9 @@ export function Contact() {
           ))}
         </div>
       </div>
-      <footer className="flex justify-between px-2 py-6 font-mono text-[11px] uppercase tracking-[0.14em] text-mute">
+      <footer className="flex justify-between px-2 py-6 font-mono text-[11px] uppercase tracking-[0.14em] text-paper/50">
         <span>© {new Date().getFullYear()} Yoobin Park</span>
-        <a href="#" className="hover:text-ink">Back to top ↑</a>
+        <a href="#" className="hover:text-paper">Back to top ↑</a>
       </footer>
     </section>
   )

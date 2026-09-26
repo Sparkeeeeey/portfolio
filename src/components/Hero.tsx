@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { asset } from '../asset'
 import { person, projects } from '../data'
 import Arrow from './Arrow'
@@ -13,12 +13,25 @@ export default function Hero() {
   const flyer = useRef<HTMLImageElement>(null)
   const [phase, setPhase] = useState<Phase>('intro')
   const [tilesIn, setTilesIn] = useState(false)
+  const startRef = useRef<() => void>(() => {})
+
+  // Until the intro finishes, links and buttons can't be used (keyboard included),
+  // so nothing can jump the page mid-animation.
+  useEffect(() => {
+    if (phase === 'done') return
+    const block = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      if (['Tab', 'Enter', ' ', 'ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End'].includes(e.key)) e.preventDefault()
+    }
+    window.addEventListener('keydown', block)
+    return () => window.removeEventListener('keydown', block)
+  }, [phase])
 
   useLayoutEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const el = flyer.current
     const target = slot.current
-    if (reduce || !el || !target || window.scrollY > 10) {
+    if (reduce || !el || !target || window.scrollY > 10 || window.location.hash) {
       setTilesIn(true)
       setPhase('done')
       return
@@ -63,11 +76,10 @@ export default function Hero() {
         document.documentElement.style.overflow = ''
       }
     }
+    startRef.current = start2
     const onKey = (e: KeyboardEvent) => {
-      if (['ArrowDown', 'PageDown', ' ', 'End', 'Enter'].includes(e.key)) {
-        e.preventDefault()
-        start2()
-      }
+      if (e.ctrlKey || e.metaKey || e.altKey) return // leave browser shortcuts (refresh, tabs) alone
+      start2()
     }
     const onScrollIntent = () => start2()
     const opts: AddEventListenerOptions = { passive: true }
@@ -196,6 +208,9 @@ export default function Hero() {
         </div>
       </div>
 
+      {/* Click shield: any click during the intro starts it (or is ignored mid-move) instead of following a link */}
+      {phase !== 'done' && <div className="fixed inset-0 z-40 cursor-pointer" onPointerDown={() => startRef.current()} aria-hidden="true" />}
+
       {/* Intro flyer: starts centered, then flies into the photo tile */}
       {phase !== 'done' && (
         <img
@@ -203,7 +218,7 @@ export default function Hero() {
           src={asset('img/me.webp')}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none fixed z-50 rounded-tile object-cover object-[50%_20%] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.35)]"
+          className="pointer-events-none fixed z-50 rounded-tile object-cover object-[50%_20%] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)]"
           style={{ opacity: 0 }}
         />
       )}
