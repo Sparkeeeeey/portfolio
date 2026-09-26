@@ -196,7 +196,7 @@ export default function Hero() {
                 className="tile tile-hover enter group flex items-center justify-between px-4 py-4 text-sm font-medium sm:px-5"
                 style={d(560 + i * 70)}
               >
-                {l.label}
+                <span>{l.label}</span>
                 <svg className="arrow" width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
