@@ -30,7 +30,7 @@ export default function Hero() {
   useLayoutEffect(() => {
     const el = flyer.current
     const target = slot.current
-    if (!el || !target || window.scrollY > 10 || window.location.hash) {
+    if (!el || !target) {
       setTilesIn(true)
       setPhase('done')
       return
