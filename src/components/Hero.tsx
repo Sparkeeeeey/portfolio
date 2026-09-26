@@ -54,7 +54,7 @@ export default function Hero() {
       { duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' },
     )
 
-    // Hold the photo centered for up to 3s, or start the move on the first scroll attempt
+    // Hold the photo centered for ~1s, or start the move on the first scroll attempt
     let move: Animation | undefined
     let started = false
     const start2 = () => {
@@ -91,7 +91,7 @@ export default function Hero() {
       window.removeEventListener('touchmove', onScrollIntent)
       window.removeEventListener('keydown', onKey)
     }
-    const t = window.setTimeout(start2, 3000)
+    const t = window.setTimeout(start2, 1200)
 
     return () => {
       window.clearTimeout(t)
