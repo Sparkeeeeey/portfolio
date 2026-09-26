@@ -118,9 +118,9 @@ export default function Hero() {
         </nav>
       </header>
 
-      <div className="grid flex-1 grid-cols-1 gap-3 lg:min-h-0 lg:grid-cols-[1fr_1.1fr_1fr] lg:grid-rows-2">
+      <div className="grid flex-1 grid-cols-1 gap-3 lg:min-h-0 lg:grid-cols-[1fr_1.1fr_1fr] lg:grid-rows-[repeat(12,minmax(0,1fr))]">
         {/* Tagline */}
-        <div className="tile tile-hover enter order-2 flex flex-col justify-between gap-8 p-6 sm:p-8 lg:order-none" style={d(120)}>
+        <div className="tile enter order-2 flex flex-col justify-between gap-8 p-6 sm:p-8 lg:order-none lg:col-start-1 lg:row-[1/7]" style={d(120)}>
           <p className="label">Mechanical Engineering · CCNY ’28</p>
           <div>
             <h1 className="text-[2.1rem] font-semibold leading-[1.02] tracking-[-0.03em] sm:text-5xl lg:text-[min(2.9vw,5.4vh)]">
@@ -134,7 +134,7 @@ export default function Hero() {
         </div>
 
         {/* Hero photo slot */}
-        <div ref={slot} className="tile order-1 aspect-[4/5] lg:order-none lg:aspect-auto" style={{ opacity: phase === 'done' ? 1 : 0 }}>
+        <div ref={slot} className="tile order-1 aspect-[4/5] lg:order-none lg:col-start-2 lg:row-[1/8] lg:aspect-auto" style={{ opacity: phase === 'done' ? 1 : 0 }}>
           <img
             src={asset('img/me.webp')}
             alt="Yoobin Park"
@@ -145,9 +145,13 @@ export default function Hero() {
         {/* Featured project (spans both rows) */}
         <a
           href="#projects"
-          className="tile tile-hover enter group order-3 flex flex-col p-3 lg:order-none lg:row-span-2"
+          className="tile tile-hover enter group order-3 flex flex-col p-3 lg:order-none lg:col-start-3 lg:row-[1/13]"
           style={d(240)}
         >
+          <div className="px-3 pb-4 pt-3 pr-16">
+            <p className="label">Featured project · {featured.date}</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{featured.title}</h2>
+          </div>
           <div className="relative min-h-[260px] flex-1 overflow-hidden rounded-[12px]">
             <img
               src={asset(featured.cover.src)}
@@ -155,18 +159,12 @@ export default function Hero() {
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             />
           </div>
-          <div className="flex items-start justify-between gap-4 px-3 pb-3 pt-5">
-            <div>
-              <p className="label">Featured project · {featured.date}</p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight">{featured.title}</h2>
-              <p className="mt-2 max-w-sm text-sm leading-relaxed text-mute">{featured.summary}</p>
-            </div>
-          </div>
+          <p className="max-w-sm px-3 pb-2 pt-4 text-sm leading-relaxed text-mute">{featured.summary}</p>
           <Arrow className="absolute right-6 top-6" />
         </a>
 
         {/* Yoobin is a… */}
-        <div className="tile tile-hover enter order-4 flex flex-col justify-between gap-6 p-6 sm:p-8 lg:order-none" style={d(360)}>
+        <div className="tile enter order-4 flex flex-col justify-between gap-6 p-6 sm:p-8 lg:order-none lg:col-start-1 lg:row-[7/13]" style={d(360)}>
           <p className="label">About</p>
           <p className="text-lg leading-snug tracking-tight sm:text-xl lg:text-[min(1.45vw,2.7vh)]">
             <span className="font-semibold">Yoobin is a</span> mechanical engineering junior at CCNY who takes ideas from SolidWorks to
@@ -176,11 +174,11 @@ export default function Hero() {
         </div>
 
         {/* Contact + links */}
-        <div className="order-5 flex flex-col gap-3 lg:order-none">
-          <a href="#contact" className="tile tile-hover enter group flex flex-1 flex-col justify-between gap-10 p-6 sm:p-8" style={d(480)}>
+        <div className="order-5 flex flex-col gap-3 lg:order-none lg:col-start-2 lg:row-[8/13] lg:min-h-0">
+          <a href="#contact" className="tile tile-hover enter group flex flex-1 flex-col justify-between gap-6 p-6 sm:p-7 lg:min-h-0" style={d(480)}>
             <p className="label">Contact</p>
             <div>
-              <p className="text-3xl font-semibold tracking-tight sm:text-4xl">Contact me</p>
+              <p className="text-3xl font-semibold tracking-tight lg:text-[min(2.2vw,4vh)]">Contact me</p>
               <p className="mt-2 text-sm text-mute">Open to Summer 2027 mechanical engineering internships.</p>
             </div>
             <Arrow className="absolute right-6 top-6" />

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { asset } from '../asset'
 import type { Media, Project } from '../data'
 import { experience, extras, person, projects } from '../data'
@@ -18,7 +18,7 @@ function R({ as: Tag = 'div', className = '', children, ...rest }: { as?: 'div' 
 
 function SectionTitle({ n, title, note }: { n: string; title: string; note?: string }) {
   return (
-    <R className="tile tile-hover flex items-end justify-between px-5 py-5 sm:px-7">
+    <R className="tile flex items-end justify-between px-5 py-5 sm:px-7">
       <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
         <span className="mr-3 font-mono text-sm font-normal text-mute">{n}</span>
         {title}
@@ -30,10 +30,42 @@ function SectionTitle({ n, title, note }: { n: string; title: string; note?: str
 
 const isDrawing = (m: Media) => /cad|wiring/.test(m.src)
 
+/** Loads nothing until scrolled into view, then plays muted (with controls so you can unmute); pauses when off screen. */
+function LazyVideo({ m, className }: { m: Media; className: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    const v = ref.current
+    if (!v) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) v.play().catch(() => {})
+        else v.pause()
+      },
+      { threshold: 0.35 },
+    )
+    io.observe(v)
+    return () => io.disconnect()
+  }, [])
+  return (
+    <video
+      ref={ref}
+      src={asset(m.src)}
+      poster={m.poster ? asset(m.poster) : undefined}
+      className={className}
+      muted
+      loop
+      playsInline
+      controls
+      preload="none"
+      aria-label={m.alt}
+    />
+  )
+}
+
 function MediaView({ m, className = '' }: { m: Media; className?: string }) {
   const fit = isDrawing(m) ? 'object-contain bg-white' : 'object-cover'
   return m.video ? (
-    <video src={asset(m.src)} poster={m.poster ? asset(m.poster) : undefined} className={`h-full w-full ${fit} ${className}`} autoPlay muted loop playsInline preload="metadata" aria-label={m.alt} />
+    <LazyVideo m={m} className={`h-full w-full ${fit} ${className}`} />
   ) : (
     <img src={asset(m.src)} alt={m.alt} loading="lazy" className={`h-full w-full ${fit} ${className}`} />
   )
@@ -44,8 +76,8 @@ function ProjectTile({ p, i }: { p: Project; i: number }) {
   const [sel, setSel] = useState(0)
   const cur = all[sel]
   return (
-    <R as="article" id={p.id} className="grid scroll-mt-4 grid-cols-1 gap-3 lg:grid-cols-[1.35fr_1fr]">
-      <div className="tile flex flex-col gap-3 p-3">
+    <article id={p.id} className="grid scroll-mt-4 grid-cols-1 gap-3 lg:grid-cols-[1.35fr_1fr]">
+      <R className="tile flex flex-col gap-3 p-3">
         <div className="relative aspect-[4/3] overflow-hidden rounded-[12px] bg-white lg:aspect-auto lg:h-[34rem]">
           <MediaView key={cur.src} m={cur} />
         </div>
@@ -56,7 +88,7 @@ function ProjectTile({ p, i }: { p: Project; i: number }) {
               type="button"
               onClick={() => setSel(j)}
               aria-label={`Show: ${m.caption ?? m.alt}`}
-              className={`aspect-square overflow-hidden rounded-[10px] bg-white transition ${j === sel ? 'ring-2 ring-ink ring-offset-2 ring-offset-tile' : 'opacity-60 hover:opacity-100'}`}
+              className={`aspect-square overflow-hidden rounded-[10px] bg-white transition ${j === sel ? 'ring-2 ring-ink ring-offset-2 ring-offset-white/0' : 'opacity-60 hover:opacity-100'}`}
             >
               {m.video ? (
                 <span className="flex h-full w-full items-center justify-center bg-ink font-mono text-[10px] uppercase tracking-widest text-paper">Video</span>
@@ -67,9 +99,9 @@ function ProjectTile({ p, i }: { p: Project; i: number }) {
           ))}
         </div>
         {cur.caption && <p className="px-1 pb-1 text-xs text-mute">{cur.caption}</p>}
-      </div>
+      </R>
 
-      <div className="tile tile-hover flex flex-col p-6 sm:p-8">
+      <R className="tile flex flex-col p-6 sm:p-8" style={{ '--d': '120ms' }}>
         <div className="flex items-start justify-between gap-4">
           <p className="label">
             {String(i + 1).padStart(2, '0')} · {p.team}
@@ -111,8 +143,8 @@ function ProjectTile({ p, i }: { p: Project; i: number }) {
             </span>
           ))}
         </div>
-      </div>
-    </R>
+      </R>
+    </article>
   )
 }
 
@@ -133,7 +165,7 @@ export function About() {
     <section id="about" className="mx-auto flex max-w-[1600px] scroll-mt-4 flex-col gap-3 px-3 pt-16 sm:px-4 sm:pt-24">
       <SectionTitle n="02" title="About" />
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-        <R className="tile tile-hover p-6 sm:p-8 lg:col-span-2">
+        <R className="tile p-6 sm:p-8 lg:col-span-2">
           <p className="label">Experience</p>
           <div className="rule mt-4 divide-y divide-line">
             {experience.map((e) => (
@@ -164,7 +196,7 @@ export function About() {
         </R>
 
         <div className="flex flex-col gap-3">
-          <R className="tile tile-hover p-6 sm:p-8">
+          <R className="tile p-6 sm:p-8">
             <p className="label">Education</p>
             <div className="mt-4 flex items-center gap-3">
               <Logo src={education.logo} name={education.school} className="h-12 w-12" />
@@ -192,7 +224,7 @@ export function About() {
           </R>
         </div>
 
-        <R className="tile tile-hover p-6 sm:p-8 lg:col-span-3">
+        <R className="tile p-6 sm:p-8 lg:col-span-3">
           <p className="label">Skills</p>
           <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {skills.map((s) => (
@@ -218,7 +250,7 @@ export function Contact() {
     <section id="contact" className="mx-auto flex max-w-[1600px] scroll-mt-4 flex-col gap-3 px-3 pb-3 pt-16 sm:px-4 sm:pb-4 sm:pt-24">
       <SectionTitle n="03" title="Contact" />
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-        <R className="tile tile-hover flex flex-col justify-between gap-10 p-6 sm:p-10 lg:col-span-2 lg:min-h-[22rem]">
+        <R className="tile flex flex-col justify-between gap-10 p-6 sm:p-10 lg:col-span-2 lg:min-h-[22rem]">
           <p className="label">Open to Summer 2027 internships</p>
           <div>
             <p className="max-w-2xl text-3xl font-semibold leading-tight tracking-tight sm:text-5xl">

@@ -123,7 +123,13 @@ export const projects: Project[] = [
     ],
     result: '2024 Southern New York State Champions and VEX World Championship competitors.',
     skills: ['Mechanical design', 'CAD', 'C++', 'Autonomous programming', 'Prototyping', 'Leadership'],
-    cover: { src: '/img/vex-run.mp4', alt: 'The robot running a skills routine', caption: 'Skills run on the practice field.', video: true, poster: '/img/vex-run-poster.webp' },
+    cover: {
+      src: '/img/vex-worlds-match.mp4',
+      alt: 'Round of 16 match at the 2024 VEX World Championship',
+      caption: 'Round of 16 match, 2024 VEX World Championship (Arts Division), with 78792E on the red alliance. Unmute for sound.',
+      video: true,
+      poster: '/img/vex-worlds-match-poster.webp',
+    },
     gallery: [
       { src: '/img/vex-state.webp', alt: 'Robot with the 2024 state championship banners', caption: '2024 Southern NY State Championship: Tournament Champion + Robot Skills Champion.' },
       { src: '/img/vex-worlds.webp', alt: 'Team at the VEX World Championship', caption: 'At the VEX World Championship.' },
